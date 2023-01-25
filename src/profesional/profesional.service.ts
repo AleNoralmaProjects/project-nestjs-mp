@@ -1,5 +1,9 @@
 import { Repository } from 'typeorm';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateProfesionalDto } from './dto/create-profesional.dto';
 import { UpdateProfesionalDto } from './dto/update-profesional.dto';
@@ -8,6 +12,9 @@ import { validate as isUUID } from 'uuid';
 import * as bcrypt from 'bcrypt';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { ErrorHandleDBService } from 'src/common/services/errorHandleDBExceptions';
+import { AuthProfesionalDto } from './dto/auth-profesional.dto';
+import { IJwtPayload } from './interfaces/jwt.interface';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class ProfesionalService {
@@ -15,7 +22,34 @@ export class ProfesionalService {
     @InjectRepository(Profesional)
     private readonly profesionalRepository: Repository<Profesional>,
     private readonly errorHandleDBException: ErrorHandleDBService,
+    private readonly jwtService: JwtService,
   ) {}
+
+  async login(authProfesionalDto: AuthProfesionalDto) {
+    const { user, password } = authProfesionalDto;
+
+    const auth_user = await this.profesionalRepository.findOne({
+      where: { user },
+      select: {
+        user: true,
+        password: true,
+        role: true,
+        id_profesional: true,
+      },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException('Credentials are not valid. Usuario');
+    }
+    if (!bcrypt.compareSync(password, auth_user.password)) {
+      console.log(password, user);
+      throw new UnauthorizedException('Credentials are not valid. Password');
+    }
+    return {
+      ...auth_user,
+      token: this.getJwtToken({ id_profesional: auth_user.id_profesional }),
+    };
+  }
 
   //CREAR..........................................................
   async create(createProfesionalDto: CreateProfesionalDto) {
@@ -94,5 +128,10 @@ export class ProfesionalService {
   async remove(id: string) {
     const deleteProfesional = await this.findOne(id);
     await this.profesionalRepository.remove(deleteProfesional);
+  }
+
+  private getJwtToken(payload: IJwtPayload) {
+    const token = this.jwtService.sign(payload);
+    return token;
   }
 }

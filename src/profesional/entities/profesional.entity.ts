@@ -1,12 +1,10 @@
 import { Profesion } from '../../profesion/entities/profesion.entity';
-import { BrigadaEai } from '../../brigada-eais/entities/brigada-eai.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
   Column,
   Entity,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -17,6 +15,7 @@ export class Profesional {
   id_profesional: string;
   //-----Id Profesional
 
+  //RELACION UNO A VARIOS CON PROFESION.
   //...Id Profesion...
   @ManyToOne(() => Profesion, (profesion) => profesion.profesional, {
     onDelete: 'CASCADE',
@@ -73,10 +72,9 @@ export class Profesional {
   })
   password: string;
 
-  @OneToOne(() => BrigadaEai, (brigadaEai) => brigadaEai.profesional, {
-    onDelete: 'CASCADE',
-  })
-  brigadaEai: BrigadaEai;
+  /* //RELACION UNO A UNO CON BRIGADA
+  @OneToOne(() => BrigadaEai, (brigadaEai) => brigadaEai.profesional)
+  brigadaEai: BrigadaEai; */
 
   @BeforeInsert()
   checkCIInsert() {

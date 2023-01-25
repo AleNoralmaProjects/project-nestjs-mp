@@ -23,4 +23,5 @@ export class Profesion {
     cascade: true,
   })
   profesional: Profesional;
+  //
 }

@@ -5,7 +5,6 @@ import { CreateBrigadaEaiDto } from './dto/create-brigada-eai.dto';
 import { UpdateBrigadaEaiDto } from './dto/update-brigada-eai.dto';
 import { BrigadaEai } from './entities/brigada-eai.entity';
 import { Repository } from 'typeorm';
-import { validate as isUUID } from 'uuid';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Injectable()
@@ -17,11 +16,11 @@ export class BrigadaEaisService {
   ) {}
 
   //--------------------------------------------
-  async create(createBrigadaEaiDto: CreateBrigadaEaiDto) {
+  async create(createBrigadaDto: CreateBrigadaEaiDto) {
     try {
-      const brigadEai = this.brigadaeaisRepository.create(createBrigadaEaiDto);
-      await this.brigadaeaisRepository.save(brigadEai);
-      return brigadEai;
+      const brigadaEai = this.brigadaeaisRepository.create(createBrigadaDto);
+      await this.brigadaeaisRepository.save(brigadaEai);
+      return brigadaEai;
     } catch (error) {
       this.errorHandleDBException.errorHandleDBException(error);
     }
@@ -34,7 +33,9 @@ export class BrigadaEaisService {
     const brigadaEai = await this.brigadaeaisRepository.find({
       take: limit,
       skip: offset,
-      relations: {},
+      relations: {
+        profesional: true,
+      },
     });
 
     return brigadaEai;

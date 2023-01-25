@@ -4,8 +4,7 @@ import {
   BeforeUpdate,
   Column,
   Entity,
-  JoinColumn,
-  OneToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -59,8 +58,10 @@ export class InfoEai {
   })
   zona: string;
 
-  @OneToOne(() => BrigadaEai)
-  @JoinColumn()
+  @OneToMany(() => BrigadaEai, (brigadaEai) => brigadaEai.eais, {
+    nullable: false,
+    cascade: true,
+  })
   brigadaEai: BrigadaEai;
 
   // .. ESTA FUNCION ME SIRVE PARA QUE NO HAYA ESPACIO VACIOS

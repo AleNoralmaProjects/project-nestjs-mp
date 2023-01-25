@@ -1,5 +1,13 @@
 import { Profesional } from '../../profesional/entities/profesional.entity';
-import { Column, Entity, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
+import { InfoEai } from '../../info-eais/entities/info-eai.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  OneToOne,
+} from 'typeorm';
 
 @Entity()
 export class BrigadaEai {
@@ -9,19 +17,19 @@ export class BrigadaEai {
   //-----Id Brigada
 
   //...ID EAIS...
-  @Column({
-    type: 'text',
-    nullable: false,
+  @ManyToOne(() => InfoEai, (infoEai) => infoEai.brigadaEai, {
+    onDelete: 'CASCADE',
   })
-  eais: string;
+  eais: InfoEai;
   //....ID EAIS...
 
   //...ID PROFESIONAL...
-  @OneToOne(() => Profesional, (profesional) => profesional.brigadaEai, {
-    nullable: false,
-    cascade: true,
+  @OneToOne(() => Profesional, {
+    onDelete: 'CASCADE',
   })
+  @JoinColumn()
   profesional: Profesional;
+
   //...ID PROFESIONAL...
 
   //fechacreacion

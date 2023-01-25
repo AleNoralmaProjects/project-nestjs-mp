@@ -13,6 +13,7 @@ import { CreateProfesionalDto } from './dto/create-profesional.dto';
 import { UpdateProfesionalDto } from './dto/update-profesional.dto';
 import { Query } from '@nestjs/common/decorators';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
+import { AuthProfesionalDto } from './dto/auth-profesional.dto';
 
 @Controller('profesional')
 export class ProfesionalController {
@@ -24,9 +25,11 @@ export class ProfesionalController {
   }
 
   //Login
-  /*  @Post('login')
-  login() {}
- */
+  @Post('login')
+  authProfesional(@Body() authProfesionalDto: AuthProfesionalDto) {
+    return this.profesionalService.login(authProfesionalDto);
+  }
+
   @Get('list')
   findAll(@Query() paginationDto: PaginationDto) {
     return this.profesionalService.findAll(paginationDto);
