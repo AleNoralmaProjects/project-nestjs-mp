@@ -38,14 +38,14 @@ export class ProfesionalService {
       },
     });
 
-    if (!user) {
-      throw new UnauthorizedException('Credentials are not valid. Usuario');
+    if (!auth_user) {
+      throw new UnauthorizedException('Credentials are not valid.');
     }
     if (!bcrypt.compareSync(password, auth_user.password)) {
-      console.log(password, user);
-      throw new UnauthorizedException('Credentials are not valid. Password');
+      throw new UnauthorizedException('Credentials are not valid.');
     }
     return {
+      ok: true,
       ...auth_user,
       token: this.getJwtToken({ id_profesional: auth_user.id_profesional }),
     };
@@ -128,6 +128,15 @@ export class ProfesionalService {
   async remove(id: string) {
     const deleteProfesional = await this.findOne(id);
     await this.profesionalRepository.remove(deleteProfesional);
+  }
+
+  //VALIDAR LOS TOKEN, VERIFICARLOS
+  async checkStatus(user: Profesional) {
+    return {
+      ok: true,
+      ...user,
+      token: this.getJwtToken({ id_profesional: user.id_profesional }),
+    };
   }
 
   private getJwtToken(payload: IJwtPayload) {

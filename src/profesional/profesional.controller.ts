@@ -14,6 +14,9 @@ import { UpdateProfesionalDto } from './dto/update-profesional.dto';
 import { Query } from '@nestjs/common/decorators';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { AuthProfesionalDto } from './dto/auth-profesional.dto';
+import { Profesional } from './entities/profesional.entity';
+import { GetUser } from './decorators/get-user.decorator';
+import { Auth } from './decorators/auth.decorator';
 
 @Controller('profesional')
 export class ProfesionalController {
@@ -28,6 +31,14 @@ export class ProfesionalController {
   @Post('login')
   authProfesional(@Body() authProfesionalDto: AuthProfesionalDto) {
     return this.profesionalService.login(authProfesionalDto);
+  }
+
+  //token Validation
+
+  @Get('status-verify')
+  @Auth()
+  checkAuthStatus(@GetUser() user: Profesional) {
+    return this.profesionalService.checkStatus(user);
   }
 
   @Get('list')
