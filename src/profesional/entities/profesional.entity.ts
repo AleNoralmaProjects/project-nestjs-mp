@@ -1,4 +1,6 @@
 import { Profesion } from '../../profesion/entities/profesion.entity';
+import { OneToMany } from 'typeorm';
+import { BrigadaEai } from '../../brigada-eais/entities/brigada-eai.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -72,9 +74,19 @@ export class Profesional {
   })
   password: string;
 
-  /* //RELACION UNO A UNO CON BRIGADA
-  @OneToOne(() => BrigadaEai, (brigadaEai) => brigadaEai.profesional)
-  brigadaEai: BrigadaEai; */
+  @Column({
+    type: 'boolean',
+    nullable: false,
+  })
+  state: boolean;
+
+  //RELACION UNO A MUCHOS CON BRIGADA
+
+  @OneToMany(() => BrigadaEai, (brigadaEai) => brigadaEai.profesional, {
+    nullable: false,
+    cascade: true,
+  })
+  brigadaEai: BrigadaEai;
 
   @BeforeInsert()
   checkCIInsert() {

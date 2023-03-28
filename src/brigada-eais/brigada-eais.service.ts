@@ -28,13 +28,17 @@ export class BrigadaEaisService {
 
   //--------------------------------------------
   async findAll(paginationDto: PaginationDto) {
-    const { limit = 10, offset = 0 } = paginationDto;
+    const { limit = 20, offset = 0 } = paginationDto;
 
     const brigadaEai = await this.brigadaeaisRepository.find({
       take: limit,
       skip: offset,
       relations: {
         profesional: true,
+        eais: true,
+      },
+      order: {
+        fecha_creacion: 'DESC',
       },
     });
 
@@ -53,6 +57,7 @@ export class BrigadaEaisService {
       },
       relations: {
         profesional: true,
+        eais: true,
       },
     });
 

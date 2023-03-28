@@ -1,13 +1,6 @@
 import { Profesional } from '../../profesional/entities/profesional.entity';
 import { InfoEai } from '../../info-eais/entities/info-eai.entity';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  OneToOne,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class BrigadaEai {
@@ -23,11 +16,10 @@ export class BrigadaEai {
   eais: InfoEai;
   //....ID EAIS...
 
-  //...ID PROFESIONAL...
-  @OneToOne(() => Profesional, {
+  //...ID PROFESIONAL...RELACION
+  @ManyToOne(() => Profesional, (profesional) => profesional.brigadaEai, {
     onDelete: 'CASCADE',
   })
-  @JoinColumn()
   profesional: Profesional;
 
   //...ID PROFESIONAL...
@@ -40,4 +32,19 @@ export class BrigadaEai {
   })
   fecha_creacion: Date;
   //fechacreacion
+
+  //fechacreacion
+  @Column({
+    type: 'timestamp without time zone',
+    nullable: false,
+    default: () => 'NOW()',
+  })
+  fecha_actualizacion: Date;
+  //fechacreacion
+
+  @Column({
+    type: 'boolean',
+    nullable: false,
+  })
+  state: boolean;
 }

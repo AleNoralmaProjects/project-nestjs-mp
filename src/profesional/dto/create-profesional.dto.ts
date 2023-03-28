@@ -1,4 +1,10 @@
-import { IsString, IsUUID, MaxLength, MinLength } from 'class-validator';
+import {
+  IsBoolean,
+  IsString,
+  IsUUID,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 import { Profesion } from '../../profesion/entities/profesion.entity';
 
 export class CreateProfesionalDto {
@@ -33,4 +39,7 @@ export class CreateProfesionalDto {
   @MaxLength(20)
   @MinLength(6)
   password: string;
+
+  @IsBoolean()
+  state: boolean;
 }

@@ -35,15 +35,20 @@ export class ProfesionalService {
         password: true,
         role: true,
         id_profesional: true,
+        state: true,
       },
     });
 
     if (!auth_user) {
       throw new UnauthorizedException('Credentials are not valid.');
     }
+    if (!auth_user.state) {
+      throw new UnauthorizedException('Usuario no habilitado');
+    }
     if (!bcrypt.compareSync(password, auth_user.password)) {
       throw new UnauthorizedException('Credentials are not valid.');
     }
+
     return {
       ok: true,
       ...auth_user,
