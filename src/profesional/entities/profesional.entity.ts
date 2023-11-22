@@ -88,13 +88,14 @@ export class Profesional {
   })
   brigadaEai: BrigadaEai;
 
+  //TRIGGERS
   @BeforeInsert()
-  checkCIInsert() {
+  checkProfesionalInsert() {
     this.cedula = this.cedula.replaceAll(' ', '');
   }
 
   @BeforeUpdate()
-  checkCIUpadate() {
+  checkProsesionalUpadate() {
     this.cedula = this.cedula.replaceAll(' ', '');
   }
 }

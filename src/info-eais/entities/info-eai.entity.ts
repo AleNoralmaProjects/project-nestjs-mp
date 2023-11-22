@@ -66,16 +66,13 @@ export class InfoEai {
 
   // .. ESTA FUNCION ME SIRVE PARA QUE NO HAYA ESPACIO VACIOS
   @BeforeInsert()
-  checkCIInsert() {
+  checkEAISInsert() {
     this.cod_eais = this.cod_eais.replaceAll(' ', '');
+    this.cod_eais = this.cod_eais.toUpperCase();
   }
 
-  /* A function that is executed before the update of the entity. */
   @BeforeUpdate()
-  /**
-   * It removes all spaces from the string.
-   */
-  checkCIUpadate() {
+  checkEAISUpadate() {
     this.cod_eais = this.cod_eais.replaceAll(' ', '');
   }
 }

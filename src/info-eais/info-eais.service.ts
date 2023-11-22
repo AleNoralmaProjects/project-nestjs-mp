@@ -5,7 +5,7 @@ import { UpdateInfoEaiDto } from './dto/update-info-eai.dto';
 import { InfoEai } from './entities/info-eai.entity';
 import { Repository } from 'typeorm';
 import { ErrorHandleDBService } from '../common/services/errorHandleDBExceptions';
-import { PaginationDto } from '../common/dtos/pagination.dto';
+
 import { validate as isUUID } from 'uuid';
 
 @Injectable()
@@ -28,13 +28,10 @@ export class InfoEaisService {
   }
 
   //------------------------------------------------------
-  async findAll(paginationDto: PaginationDto) {
-    const { limit = 10, offset = 0 } = paginationDto;
+  async findAll() {
+    /* const { limit = 10, offset = 0 } = paginationDto; */
 
-    const infoeais = await this.infoeaisRepository.find({
-      take: limit,
-      skip: offset,
-    });
+    const infoeais = await this.infoeaisRepository.find({});
 
     return infoeais;
 

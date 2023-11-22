@@ -5,7 +5,6 @@ import { CreateBrigadaEaiDto } from './dto/create-brigada-eai.dto';
 import { UpdateBrigadaEaiDto } from './dto/update-brigada-eai.dto';
 import { BrigadaEai } from './entities/brigada-eai.entity';
 import { Repository } from 'typeorm';
-import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Injectable()
 export class BrigadaEaisService {
@@ -27,12 +26,12 @@ export class BrigadaEaisService {
   }
 
   //--------------------------------------------
-  async findAll(paginationDto: PaginationDto) {
-    const { limit = 20, offset = 0 } = paginationDto;
+  async findAll() {
+    /* const { limit = 20, offset = 0 } = paginationDto; */
 
     const brigadaEai = await this.brigadaeaisRepository.find({
-      take: limit,
-      skip: offset,
+      /* take: limit,
+      skip: offset, */
       relations: {
         profesional: true,
         eais: true,

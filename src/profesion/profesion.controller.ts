@@ -6,12 +6,11 @@ import {
   Patch,
   Param,
   Delete,
-  Query,
 } from '@nestjs/common';
 import { ProfesionService } from './profesion.service';
 import { CreateProfesionDto } from './dto/create-profesion.dto';
 import { UpdateProfesionDto } from './dto/update-profesion.dto';
-import { PaginationDto } from 'src/common/dtos/pagination.dto';
+
 import { ParseUUIDPipe } from '@nestjs/common/pipes';
 
 @Controller('profesion')
@@ -24,8 +23,8 @@ export class ProfesionController {
   }
 
   @Get('list')
-  findAll(@Query() paginationDto: PaginationDto) {
-    return this.profesionService.findAll(paginationDto);
+  findAll() {
+    return this.profesionService.findAll();
   }
 
   @Get('search/:term')

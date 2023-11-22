@@ -7,12 +7,10 @@ import {
   Param,
   Delete,
   ParseUUIDPipe,
-  Query,
 } from '@nestjs/common';
 import { InfoEaisService } from './info-eais.service';
 import { CreateInfoEaiDto } from './dto/create-info-eai.dto';
 import { UpdateInfoEaiDto } from './dto/update-info-eai.dto';
-import { PaginationDto } from '../common/dtos/pagination.dto';
 
 @Controller('info-eais')
 export class InfoEaisController {
@@ -24,8 +22,8 @@ export class InfoEaisController {
   }
 
   @Get('list')
-  findAll(@Query() paginationDto: PaginationDto) {
-    return this.infoEaisService.findAll(paginationDto);
+  findAll() {
+    return this.infoEaisService.findAll();
   }
 
   @Get('search/:term')

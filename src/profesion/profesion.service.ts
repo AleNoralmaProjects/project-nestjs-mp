@@ -4,7 +4,7 @@ import { CreateProfesionDto } from './dto/create-profesion.dto';
 import { UpdateProfesionDto } from './dto/update-profesion.dto';
 import { Profesion } from './entities/profesion.entity';
 import { Repository } from 'typeorm';
-import { PaginationDto } from 'src/common/dtos/pagination.dto';
+
 import { ErrorHandleDBService } from 'src/common/services/errorHandleDBExceptions';
 
 @Injectable()
@@ -27,13 +27,10 @@ export class ProfesionService {
   }
 
   //---------------------
-  async findAll(paginationDto: PaginationDto) {
-    const { limit = 10, offset = 0 } = paginationDto;
+  async findAll() {
+    /* const { limit = 10, offset = 0 } = paginationDto; */
 
-    const profesion = await this.profesionRepository.find({
-      take: limit,
-      skip: offset,
-    });
+    const profesion = await this.profesionRepository.find({});
     return profesion;
 
     /*  return profesiones.map((profesion) => ({

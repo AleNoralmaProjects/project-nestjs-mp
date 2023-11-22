@@ -10,7 +10,7 @@ import { UpdateProfesionalDto } from './dto/update-profesional.dto';
 import { Profesional } from './entities/profesional.entity';
 import { validate as isUUID } from 'uuid';
 import * as bcrypt from 'bcrypt';
-import { PaginationDto } from 'src/common/dtos/pagination.dto';
+
 import { ErrorHandleDBService } from 'src/common/services/errorHandleDBExceptions';
 import { AuthProfesionalDto } from './dto/auth-profesional.dto';
 import { IJwtPayload } from './interfaces/jwt.interface';
@@ -40,13 +40,13 @@ export class ProfesionalService {
     });
 
     if (!auth_user) {
-      throw new UnauthorizedException('Credentials are not valid.');
+      throw new UnauthorizedException('Credenciales incorrectas.');
     }
     if (!auth_user.state) {
       throw new UnauthorizedException('Usuario no habilitado');
     }
     if (!bcrypt.compareSync(password, auth_user.password)) {
-      throw new UnauthorizedException('Credentials are not valid.');
+      throw new UnauthorizedException('Credenciales incorrectas.');
     }
 
     return {
@@ -72,14 +72,13 @@ export class ProfesionalService {
   }
 
   //.ENCONTRAR AL...............
-  async findAll(paginationDto: PaginationDto) {
-    const { limit = 10, offset = 0 } = paginationDto;
-
+  async findAll() {
     return this.profesionalRepository.find({
-      take: limit,
-      skip: offset,
       relations: {
         profesion: true,
+      },
+      order: {
+        apellidos: 'ASC',
       },
     });
   }
@@ -111,6 +110,26 @@ export class ProfesionalService {
     if (!user)
       throw new NotFoundException(`Profesional con ID: ${term} no encontrado`);
     return user;
+  }
+
+  /*  async findProfesionalActive() {
+    return this.profesionalRepository.find({
+      where: {
+        state: true,
+        role: 'EAIS',
+      },
+      relations: {
+        brigadaEai: true,
+      },
+    });
+  } */
+  async findProfesionalActive() {
+    return this.profesionalRepository
+      .createQueryBuilder('profesional')
+      .where('profesional.state = :state', { state: true })
+      .andWhere('profesional.role = :role', { role: 'EAIS' })
+      .leftJoinAndSelect('profesional.brigadaEai', 'brigadaEai')
+      .getMany();
   }
 
   //..ACTUALIZAR...................

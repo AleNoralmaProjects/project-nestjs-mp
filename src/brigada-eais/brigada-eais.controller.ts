@@ -6,12 +6,11 @@ import {
   Patch,
   Param,
   Delete,
-  Query,
 } from '@nestjs/common';
 import { BrigadaEaisService } from './brigada-eais.service';
 import { CreateBrigadaEaiDto } from './dto/create-brigada-eai.dto';
 import { UpdateBrigadaEaiDto } from './dto/update-brigada-eai.dto';
-import { PaginationDto } from '../common/dtos/pagination.dto';
+
 import { ParseUUIDPipe } from '@nestjs/common/pipes';
 
 @Controller('brigada-eais')
@@ -24,8 +23,8 @@ export class BrigadaEaisController {
   }
 
   @Get('list')
-  findAll(@Query() paginationDto: PaginationDto) {
-    return this.brigadaEaisService.findAll(paginationDto);
+  findAll() {
+    return this.brigadaEaisService.findAll();
   }
 
   @Get('search/:id')

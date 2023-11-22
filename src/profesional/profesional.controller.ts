@@ -11,8 +11,6 @@ import {
 import { ProfesionalService } from './profesional.service';
 import { CreateProfesionalDto } from './dto/create-profesional.dto';
 import { UpdateProfesionalDto } from './dto/update-profesional.dto';
-import { Query } from '@nestjs/common/decorators';
-import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { AuthProfesionalDto } from './dto/auth-profesional.dto';
 import { Profesional } from './entities/profesional.entity';
 import { GetUser } from './decorators/get-user.decorator';
@@ -42,13 +40,19 @@ export class ProfesionalController {
   }
 
   @Get('list')
-  findAll(@Query() paginationDto: PaginationDto) {
-    return this.profesionalService.findAll(paginationDto);
+  findAll() {
+    return this.profesionalService.findAll();
   }
 
   @Get('search/:term')
   findOne(@Param('term') term: string) {
     return this.profesionalService.findOne(term);
+  }
+
+  //METODO CONTROL PROFESIONALES EAIS
+  @Get('listProfesionalActive/')
+  findActiveProfesional() {
+    return this.profesionalService.findProfesionalActive();
   }
 
   @Patch('update/:id')
