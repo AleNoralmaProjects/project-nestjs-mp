@@ -10,7 +10,7 @@ import { Profesional } from '../entities/profesional.entity';
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
-    @InjectRepository(Profesional)
+    @InjectRepository(Profesional, 'default')
     private readonly profesionalRepository: Repository<Profesional>,
     configService: ConfigService,
   ) {

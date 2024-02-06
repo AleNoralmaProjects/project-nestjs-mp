@@ -10,7 +10,7 @@ import { ErrorHandleDBService } from 'src/common/services/errorHandleDBException
 @Injectable()
 export class ProfesionService {
   constructor(
-    @InjectRepository(Profesion)
+    @InjectRepository(Profesion, 'default')
     private readonly profesionRepository: Repository<Profesion>,
     private readonly errorHandleDBException: ErrorHandleDBService,
   ) {}

@@ -55,12 +55,25 @@ export class ProfesionalController {
     return this.profesionalService.findProfesionalActive();
   }
 
+  @Get('user-verify/:term')
+  findUser(@Param('term') term: string) {
+    return this.profesionalService.findUser(term);
+  }
+
   @Patch('update/:id')
   update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateProfesionalDto: UpdateProfesionalDto,
   ) {
     return this.profesionalService.update(id, updateProfesionalDto);
+  }
+
+  @Patch('update-password/:id')
+  updatePassword(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateProfesionalDto: UpdateProfesionalDto,
+  ) {
+    return this.profesionalService.updatePassword(id, updateProfesionalDto);
   }
 
   @Delete('delete/:id')

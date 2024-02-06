@@ -9,7 +9,7 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class BrigadaEaisService {
   constructor(
-    @InjectRepository(BrigadaEai)
+    @InjectRepository(BrigadaEai, 'default')
     private readonly brigadaeaisRepository: Repository<BrigadaEai>,
     private readonly errorHandleDBException: ErrorHandleDBService,
   ) {}

@@ -10,7 +10,6 @@ import { UpdateProfesionalDto } from './dto/update-profesional.dto';
 import { Profesional } from './entities/profesional.entity';
 import { validate as isUUID } from 'uuid';
 import * as bcrypt from 'bcrypt';
-
 import { ErrorHandleDBService } from 'src/common/services/errorHandleDBExceptions';
 import { AuthProfesionalDto } from './dto/auth-profesional.dto';
 import { IJwtPayload } from './interfaces/jwt.interface';
@@ -19,13 +18,13 @@ import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class ProfesionalService {
   constructor(
-    @InjectRepository(Profesional)
+    @InjectRepository(Profesional, 'default')
     private readonly profesionalRepository: Repository<Profesional>,
     private readonly errorHandleDBException: ErrorHandleDBService,
     private readonly jwtService: JwtService,
   ) {}
 
-  async login(authProfesionalDto: AuthProfesionalDto) {
+  async login(authProfesionalDto: AuthProfesionalDto): Promise<any> {
     const { user, password } = authProfesionalDto;
 
     const auth_user = await this.profesionalRepository.findOne({
@@ -48,10 +47,12 @@ export class ProfesionalService {
     if (!bcrypt.compareSync(password, auth_user.password)) {
       throw new UnauthorizedException('Credenciales incorrectas.');
     }
-
     return {
-      ok: true,
-      ...auth_user,
+      user: {
+        id_Profesional: auth_user.id_profesional,
+        user: auth_user.user,
+        role: auth_user.role,
+      },
       token: this.getJwtToken({ id_profesional: auth_user.id_profesional }),
     };
   }
@@ -94,6 +95,9 @@ export class ProfesionalService {
         },
         relations: {
           profesion: true,
+          brigadaEai: {
+            eais: true,
+          },
         },
       });
     } else {
@@ -112,17 +116,18 @@ export class ProfesionalService {
     return user;
   }
 
-  /*  async findProfesionalActive() {
-    return this.profesionalRepository.find({
+  async findUser(term: string) {
+    const professional = await this.profesionalRepository.findOne({
       where: {
-        state: true,
-        role: 'EAIS',
-      },
-      relations: {
-        brigadaEai: true,
+        user: term,
       },
     });
-  } */
+    if (professional) {
+      throw new NotFoundException(`Profesional con usuario ${term} ya existe`);
+    }
+    return true;
+  }
+
   async findProfesionalActive() {
     return this.profesionalRepository
       .createQueryBuilder('profesional')
@@ -148,6 +153,22 @@ export class ProfesionalService {
     }
   }
 
+  async updatePassword(id: string, updateProfesionalDto: UpdateProfesionalDto) {
+    const { password } = updateProfesionalDto;
+    const user = await this.profesionalRepository.preload({
+      id_profesional: id,
+      password: bcrypt.hashSync(password, 10),
+    });
+    if (!user)
+      throw new NotFoundException(`Profesional con ID: ${id} no encontrado`);
+    try {
+      await this.profesionalRepository.save(user);
+      return user;
+    } catch (error) {
+      this.errorHandleDBException.errorHandleDBException(error);
+    }
+  }
+
   //ELIMINAR.........................
   async remove(id: string) {
     const deleteProfesional = await this.findOne(id);
@@ -157,8 +178,11 @@ export class ProfesionalService {
   //VALIDAR LOS TOKEN, VERIFICARLOS
   async checkStatus(user: Profesional) {
     return {
-      ok: true,
-      ...user,
+      user: {
+        id_Profesional: user.id_profesional,
+        user: user.user,
+        role: user.role,
+      },
       token: this.getJwtToken({ id_profesional: user.id_profesional }),
     };
   }

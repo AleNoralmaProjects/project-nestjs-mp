@@ -11,7 +11,7 @@ import { validate as isUUID } from 'uuid';
 @Injectable()
 export class InfoEaisService {
   constructor(
-    @InjectRepository(InfoEai)
+    @InjectRepository(InfoEai, 'default')
     private readonly infoeaisRepository: Repository<InfoEai>,
     private readonly errorHandleDBException: ErrorHandleDBService,
   ) {}
