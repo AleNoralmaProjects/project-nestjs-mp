@@ -12,35 +12,26 @@ import {
 
 @Entity()
 export class Profesional {
-  //------Id Profesional
   @PrimaryGeneratedColumn('uuid')
   id_profesional: string;
-  //-----Id Profesional
 
-  //RELACION UNO A VARIOS CON PROFESION.
-  //...Id Profesion...
   @ManyToOne(() => Profesion, (profesion) => profesion.profesional, {
     onDelete: 'CASCADE',
   })
   profesion: Profesion;
-  //...Id Profesion...
 
-  //......
   @Column({
     type: 'text',
     nullable: false,
   })
   role: string;
-  //......
 
-  //......
   @Column({
     type: 'text',
     unique: true,
     nullable: false,
   })
   cedula: string;
-  //......
 
   @Column({
     type: 'text',
@@ -70,7 +61,7 @@ export class Profesional {
   @Column({
     type: 'text',
     nullable: false,
-    select: false, //no se va a mostrar al usuario
+    select: false,
   })
   password: string;
 
@@ -80,15 +71,12 @@ export class Profesional {
   })
   state: boolean;
 
-  //RELACION UNO A MUCHOS CON BRIGADA
-
   @OneToMany(() => BrigadaEai, (brigadaEai) => brigadaEai.profesional, {
     nullable: false,
     cascade: true,
   })
   brigadaEai: BrigadaEai;
 
-  //TRIGGERS
   @BeforeInsert()
   checkProfesionalInsert() {
     this.cedula = this.cedula.replaceAll(' ', '');

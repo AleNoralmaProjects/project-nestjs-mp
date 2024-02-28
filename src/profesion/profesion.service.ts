@@ -15,7 +15,6 @@ export class ProfesionService {
     private readonly errorHandleDBException: ErrorHandleDBService,
   ) {}
 
-  //CREATE...........................................
   async create(createProfesionDto: CreateProfesionDto) {
     try {
       const profesion = this.profesionRepository.create(createProfesionDto);
@@ -26,17 +25,9 @@ export class ProfesionService {
     }
   }
 
-  //---------------------
   async findAll() {
-    /* const { limit = 10, offset = 0 } = paginationDto; */
-
     const profesion = await this.profesionRepository.find({});
     return profesion;
-
-    /*  return profesiones.map((profesion) => ({
-      ...profesion,
-      agendamiento: polivalente.agendamiento,
-    })); */
   }
 
   async findOne(term: string) {

@@ -16,7 +16,6 @@ export class InfoEaisService {
     private readonly errorHandleDBException: ErrorHandleDBService,
   ) {}
 
-  //--------------------------------------------------
   async create(createInfoEaiDto: CreateInfoEaiDto) {
     try {
       const infoeais = this.infoeaisRepository.create(createInfoEaiDto);
@@ -27,21 +26,14 @@ export class InfoEaisService {
     }
   }
 
-  //------------------------------------------------------
   async findAll() {
     /* const { limit = 10, offset = 0 } = paginationDto; */
 
     const infoeais = await this.infoeaisRepository.find({});
 
     return infoeais;
-
-    /* return infoeais.map((infoeais) => ({
-      ...infoeais,
-      infoeais: infoeais.agendamiento,
-    })); */
   }
 
-  //------------------------------------------------------
   async findOne(term: string) {
     let infoeais: InfoEai;
 
@@ -70,7 +62,6 @@ export class InfoEaisService {
     return infoeais;
   }
 
-  //------------------------------------------------------
   async update(id: string, updateInfoEaiDto: UpdateInfoEaiDto) {
     const infoeais = await this.infoeaisRepository.preload({
       id_eais: id,
@@ -86,7 +77,6 @@ export class InfoEaisService {
     }
   }
 
-  //------------------------------------------------------
   async remove(id: string) {
     const deleteInfoEai = await this.findOne(id);
     await this.infoeaisRepository.remove(deleteInfoEai);

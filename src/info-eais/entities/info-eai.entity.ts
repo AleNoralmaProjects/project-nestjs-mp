@@ -64,7 +64,6 @@ export class InfoEai {
   })
   brigadaEai: BrigadaEai;
 
-  // .. ESTA FUNCION ME SIRVE PARA QUE NO HAYA ESPACIO VACIOS
   @BeforeInsert()
   checkEAISInsert() {
     this.cod_eais = this.cod_eais.replaceAll(' ', '');

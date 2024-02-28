@@ -14,7 +14,6 @@ export class BrigadaEaisService {
     private readonly errorHandleDBException: ErrorHandleDBService,
   ) {}
 
-  //--------------------------------------------
   async create(createBrigadaDto: CreateBrigadaEaiDto) {
     try {
       const brigadaEai = this.brigadaeaisRepository.create(createBrigadaDto);
@@ -25,13 +24,8 @@ export class BrigadaEaisService {
     }
   }
 
-  //--------------------------------------------
   async findAll() {
-    /* const { limit = 20, offset = 0 } = paginationDto; */
-
     const brigadaEai = await this.brigadaeaisRepository.find({
-      /* take: limit,
-      skip: offset, */
       relations: {
         profesional: true,
         eais: true,
@@ -42,10 +36,6 @@ export class BrigadaEaisService {
     });
 
     return brigadaEai;
-    /*  return agendamiento.map((agendamiento) => ({
-      ...agendamiento,
-      polivalente: agendamiento.polivalente,
-    })); */
   }
 
   //--------------------------------------------

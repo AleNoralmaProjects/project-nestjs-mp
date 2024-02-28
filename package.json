@@ -1,8 +1,8 @@
 {
-  "name": "nest-projectmp",
-  "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "name": "nest-mapaparlante",
+  "version": "1.0.0",
+  "description": "Api Rest Mapa Parlante",
+  "author": "AleNoralma",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {

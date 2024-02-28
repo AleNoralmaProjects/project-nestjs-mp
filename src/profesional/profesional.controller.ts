@@ -25,13 +25,10 @@ export class ProfesionalController {
     return this.profesionalService.create(createProfesionalDto);
   }
 
-  //Login
   @Post('login')
   authProfesional(@Body() authProfesionalDto: AuthProfesionalDto) {
     return this.profesionalService.login(authProfesionalDto);
   }
-
-  //token Validation
 
   @Get('status-verify')
   @Auth()
@@ -47,6 +44,11 @@ export class ProfesionalController {
   @Get('search/:term')
   findOne(@Param('term') term: string) {
     return this.profesionalService.findOne(term);
+  }
+
+  @Get('searchEaisEnable/:term')
+  findOneEnable(@Param('term', ParseUUIDPipe) term: string) {
+    return this.profesionalService.findOneEnable(term);
   }
 
   //METODO CONTROL PROFESIONALES EAIS

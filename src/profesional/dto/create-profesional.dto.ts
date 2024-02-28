@@ -8,7 +8,6 @@ import {
 import { Profesion } from '../../profesion/entities/profesion.entity';
 
 export class CreateProfesionalDto {
-  //decoradores_ced
   @IsString()
   @IsUUID()
   profesion: Profesion;

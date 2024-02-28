@@ -8,9 +8,9 @@ export class PoolService {
   constructor() {
     this.queryRunner = new Pool({
       user: 'postgres',
-      host: 'localhost',
-      database: 'BD_FichaFamiliar',
-      password: 'Inti2021',
+      host: '181.112.228.13',
+      database: 'cscdb_chambo',
+      password: 'Datatics.2024',
       port: 5432,
     });
   }

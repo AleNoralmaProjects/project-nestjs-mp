@@ -57,7 +57,6 @@ export class ProfesionalService {
     };
   }
 
-  //CREAR..........................................................
   async create(createProfesionalDto: CreateProfesionalDto) {
     try {
       const { password, ...usuarioData } = createProfesionalDto;
@@ -72,7 +71,6 @@ export class ProfesionalService {
     }
   }
 
-  //.ENCONTRAR AL...............
   async findAll() {
     return this.profesionalRepository.find({
       relations: {
@@ -84,7 +82,6 @@ export class ProfesionalService {
     });
   }
 
-  //...........ENCONTRAR solo un va
   async findOne(term: string) {
     let user: Profesional;
 
@@ -137,7 +134,23 @@ export class ProfesionalService {
       .getMany();
   }
 
-  //..ACTUALIZAR...................
+  async findOneEnable(term: string) {
+    const user = await this.profesionalRepository
+      .createQueryBuilder('profesional')
+      .leftJoinAndSelect(
+        'profesional.brigadaEai',
+        'brigadaEai',
+        'brigadaEai.state = :state',
+        {
+          state: true,
+        },
+      )
+      .where('profesional.id_profesional = :term', { term })
+      .getOne();
+
+    return user;
+  }
+
   async update(id: string, updateProfesionalDto: UpdateProfesionalDto) {
     const user = await this.profesionalRepository.preload({
       id_profesional: id,
@@ -169,13 +182,11 @@ export class ProfesionalService {
     }
   }
 
-  //ELIMINAR.........................
   async remove(id: string) {
     const deleteProfesional = await this.findOne(id);
     await this.profesionalRepository.remove(deleteProfesional);
   }
 
-  //VALIDAR LOS TOKEN, VERIFICARLOS
   async checkStatus(user: Profesional) {
     return {
       user: {

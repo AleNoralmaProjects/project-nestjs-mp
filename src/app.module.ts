@@ -25,7 +25,7 @@ import { PoolModule } from './pool/pool.module';
       synchronize: true,
     }),
     TypeOrmModule.forRoot({
-      name: 'fichaFamiliarDB',
+      name: 'cscdb_chambo',
       type: 'postgres',
       host: process.env.FF_DB_HOST,
       port: +process.env.FF_DB_PORT,
